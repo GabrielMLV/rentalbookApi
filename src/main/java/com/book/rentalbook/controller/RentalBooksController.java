@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class RentalBooksController {
     //INSERT RENTAL BOOK
     @CrossOrigin
     @PostMapping(path = {"/insertRental"})
-    public ResponseEntity <?> createRentalBook(@RequestBody RentalBooks rentalBooks){
+    public ResponseEntity <?> createRentalBook(@RequestBody RentalBooks rentalBooks) throws ParseException {
         if(rentalBooks == null){
             response = ResponseEntity.badRequest().build();
         }else {
@@ -41,6 +43,17 @@ public class RentalBooksController {
             }else{
                 book.setStatus_book(2); // change status book Alugado
                 repositoryBook.save(book);
+                String dateStart = rentalBooks.getDate_start_rental().toString();
+                String dateEnd = rentalBooks.getDate_end_rental().toString();
+                String dataStartJson = dateStart.replaceAll("T", " ").replaceAll("Z", "");
+                String dataEndJson = dateEnd.replaceAll("T", " ").replaceAll("Z", "");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+
+                Date dataStartFormated = new Date(format.parse(dataStartJson).getTime());
+                Date dataEndFormated = new Date(format.parse(dataEndJson).getTime());
+
+                rentalBooks.setDate_start_rental(dataStartFormated);
+                rentalBooks.setDate_end_rental(dataEndFormated);
                 rentalBooks.setId_status_rental(book_rental);
                 rentalBooks.setCreatedAt(new Date());
                 rentalBooks.setUpdatedAt(new Date());
@@ -55,7 +68,7 @@ public class RentalBooksController {
     //INSERT RESERVED BOOK
     @CrossOrigin
     @PostMapping(path = {"/insertReserved"})
-    public ResponseEntity <?> createReservedBook(@RequestBody RentalBooks rentalBooks){
+    public ResponseEntity <?> createReservedBook(@RequestBody RentalBooks rentalBooks) throws ParseException {
         if(rentalBooks == null){
             response = ResponseEntity.badRequest().build();
         }else {
@@ -68,6 +81,19 @@ public class RentalBooksController {
             }else{
                 book.setStatus_book(3); // change status book Reservado
                 repositoryBook.save(book);
+
+                String dateStart = rentalBooks.getDate_start_rental().toString();
+                String dateEnd = rentalBooks.getDate_end_rental().toString();
+                String dataStartJson = dateStart.replaceAll("T", " ").replaceAll("Z", "");
+                String dataEndJson = dateEnd.replaceAll("T", " ").replaceAll("Z", "");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+
+                Date dataStartFormated = new Date(format.parse(dataStartJson).getTime());
+                Date dataEndFormated = new Date(format.parse(dataEndJson).getTime());
+
+                rentalBooks.setDate_start_rental(dataStartFormated);
+                rentalBooks.setDate_end_rental(dataEndFormated);
+
                 rentalBooks.setId_status_rental(book_reserved);
                 rentalBooks.setCreatedAt(new Date());
                 rentalBooks.setUpdatedAt(new Date());
