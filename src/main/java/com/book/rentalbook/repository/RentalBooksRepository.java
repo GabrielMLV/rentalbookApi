@@ -1,8 +1,6 @@
 package com.book.rentalbook.repository;
 
-import com.book.rentalbook.model.Book;
-import com.book.rentalbook.model.Rental_books;
-import com.book.rentalbook.object.RentalWeekly;
+import com.book.rentalbook.model.RentalBooks;
 import com.book.rentalbook.projection.RentalBooksWeekly;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +12,7 @@ import java.util.List;
 //Use JpaRepository interface
 @Repository
 @EnableJpaRepositories
-public interface RentalBooksRepository extends JpaRepository<Rental_books, Long> {
+public interface RentalBooksRepository extends JpaRepository<RentalBooks, Long> {
 
 /*    @Query(value = "SELECT rb.*, bk.title as bookTitle, cl.name as clientName FROM rental_books rb" +
                     " RIGHT JOIN book bk ON bk.id = rb.id_book" +
@@ -33,6 +31,6 @@ public interface RentalBooksRepository extends JpaRepository<Rental_books, Long>
             " rb.id_status_rental = ?1" )
     List<RentalBooksWeekly> searchByDateAndStatus(int id_status_rental);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM renta_books WHERE id_book = ?1" )
-    List<Rental_books> getRentalByIdBook(Long id);
+    @Query(nativeQuery = true, value = "SELECT * FROM rentabooks WHERE id_book = ?1" )
+    List<RentalBooks> getRentalByIdBook(Long id);
 }

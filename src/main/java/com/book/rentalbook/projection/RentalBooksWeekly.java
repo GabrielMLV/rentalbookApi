@@ -1,8 +1,5 @@
 package com.book.rentalbook.projection;
 
-import com.book.rentalbook.model.Rental_books;
-import lombok.Data;
-
 import java.util.Date;
 
 

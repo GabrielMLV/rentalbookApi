@@ -1,7 +1,7 @@
 package com.book.rentalbook.controller;
 
 import com.book.rentalbook.model.Book;
-import com.book.rentalbook.model.Rental_books;
+import com.book.rentalbook.model.RentalBooks;
 import com.book.rentalbook.repository.BookRepository;
 import com.book.rentalbook.repository.RentalBooksRepository;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +12,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping({"/book"})
-public class Book_ctrl {
+public class BookController {
 
     private ResponseEntity <?> response;
 
-    public Book_ctrl(BookRepository repository, RentalBooksRepository repositoryRental){
+    public BookController(BookRepository repository, RentalBooksRepository repositoryRental){
         response = null;
         this.repository = repository;
         this.repositoryRental = repositoryRental;
@@ -29,8 +29,8 @@ public class Book_ctrl {
     @CrossOrigin
     @PostMapping()
     public ResponseEntity <?> create(@RequestBody Book book){
-        book.setCreatedAt(book.getCreatedAt() == null ? new Date() : book.getCreatedAt()); //verifica se foi passado uma data de criação
-        book.setUpdatedAt(book.getUpdatedAt() == null ? new Date() : book.getUpdatedAt()); //verifica se foi passado uma data de upadete
+        book.setCreatedAt(new Date()); //verifica se foi passado uma data de criação
+        book.setUpdatedAt(new Date()); //verifica se foi passado uma data de upadete
         Book bookResult = repository.save(book);
         ResponseEntity.ok().body(bookResult);
         return response;
@@ -38,7 +38,7 @@ public class Book_ctrl {
 
     // GET ALL CLIENTS
     @CrossOrigin
-    @GetMapping()
+    @GetMapping(produces="application/json")
     public ResponseEntity <?> findAll(){
         List<Book> books = repository.findAll();
         return ResponseEntity.ok().body(books);
@@ -72,7 +72,7 @@ public class Book_ctrl {
                 record.setStatus_book(book.getStatus_book());
                 record.setCreatedBy(record.getCreatedBy()); //mantendo os valores de criação
                 record.setCreatedAt(record.getCreatedAt()); //mantendo os valores de criação
-                record.setUpdatedAt(book.getUpdatedAt() == null ? new Date() : book.getUpdatedAt()); //verifica se foi passado uma nova data de update
+                record.setUpdatedAt(new Date()); // nova data de update
                 //save client
                 Book updated = repository.save(record);
                 return ResponseEntity.ok().body(updated);
@@ -93,7 +93,7 @@ public class Book_ctrl {
             record.setStatus_book(status_blocked);
             record.setCreatedBy(record.getCreatedBy()); //mantendo os valores de criação
             record.setCreatedAt(record.getCreatedAt()); //mantendo os valores de criação
-            record.setUpdatedAt(record.getUpdatedAt() == null ? new Date() : record.getUpdatedAt()); //verifica se foi passado uma nova data de update
+            record.setUpdatedAt(new Date()); // nova data de update
             //save client
             Book updated = repository.save(record);
             return ResponseEntity.ok().body(updated);
@@ -114,7 +114,7 @@ public class Book_ctrl {
                     if(record.getStatus_book() > 1){ //Livro alugado ou reservado
                         return ResponseEntity.ok("Book in use");
                     }else{
-                        List<Rental_books> listRentalBooks = repositoryRental.getRentalByIdBook(id);
+                        List<RentalBooks> listRentalBooks = repositoryRental.getRentalByIdBook(id);
                         if(listRentalBooks.size() == 0){ //verifica se o book tem alugueis ou reservas caso não tiver é possível deletar o book
                             repository.deleteById(id);
                             return ResponseEntity.ok().build();

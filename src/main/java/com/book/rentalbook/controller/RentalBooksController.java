@@ -1,8 +1,7 @@
 package com.book.rentalbook.controller;
 
 import com.book.rentalbook.model.Book;
-import com.book.rentalbook.model.Rental_books;
-import com.book.rentalbook.object.RentalWeekly;
+import com.book.rentalbook.model.RentalBooks;
 import com.book.rentalbook.projection.RentalBooksWeekly;
 import com.book.rentalbook.repository.BookRepository;
 import com.book.rentalbook.repository.RentalBooksRepository;
@@ -12,14 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping({"/rentalBook"})
-public class Rental_books_ctrl {
+public class RentalBooksController {
     private ResponseEntity<?> response ;
     //CONSTRUCTOR
-    public Rental_books_ctrl(RentalBooksRepository repository, BookRepository repositoryBook){
+    public RentalBooksController(RentalBooksRepository repository, BookRepository repositoryBook){
         response = null;
         this.repository = repository;
         this.repositoryBook = repositoryBook;
@@ -29,8 +27,8 @@ public class Rental_books_ctrl {
 
     //INSERT RENTAL BOOK
     @CrossOrigin
-    @PostMapping(path = {"/inserRental"})
-    public ResponseEntity <?> createRentalBook(@RequestBody Rental_books rentalBooks){
+    @PostMapping(path = {"/insertRental"})
+    public ResponseEntity <?> createRentalBook(@RequestBody RentalBooks rentalBooks){
         if(rentalBooks == null){
             response = ResponseEntity.badRequest().build();
         }else {
@@ -44,9 +42,9 @@ public class Rental_books_ctrl {
                 book.setStatus_book(2); // change status book Alugado
                 repositoryBook.save(book);
                 rentalBooks.setId_status_rental(book_rental);
-                rentalBooks.setCreatedAt(rentalBooks.getCreatedAt() == null ? new Date() : rentalBooks.getCreatedAt());
-                rentalBooks.setUpdatedAt(rentalBooks.getUpdatedAt() == null ? new Date() : rentalBooks.getUpdatedAt());
-                Rental_books resultRb = repository.save(rentalBooks);
+                rentalBooks.setCreatedAt(new Date());
+                rentalBooks.setUpdatedAt(new Date());
+                RentalBooks resultRb = repository.save(rentalBooks);
                 response = ResponseEntity.ok().body(resultRb);
             }
 
@@ -56,8 +54,8 @@ public class Rental_books_ctrl {
 
     //INSERT RESERVED BOOK
     @CrossOrigin
-    @PostMapping(path = {"/inserReserved"})
-    public ResponseEntity <?> createReservedBook(@RequestBody Rental_books rentalBooks){
+    @PostMapping(path = {"/insertReserved"})
+    public ResponseEntity <?> createReservedBook(@RequestBody RentalBooks rentalBooks){
         if(rentalBooks == null){
             response = ResponseEntity.badRequest().build();
         }else {
@@ -71,9 +69,9 @@ public class Rental_books_ctrl {
                 book.setStatus_book(3); // change status book Reservado
                 repositoryBook.save(book);
                 rentalBooks.setId_status_rental(book_reserved);
-                rentalBooks.setCreatedAt(rentalBooks.getCreatedAt() == null ? new Date() : rentalBooks.getCreatedAt());
-                rentalBooks.setUpdatedAt(rentalBooks.getUpdatedAt() == null ? new Date() : rentalBooks.getUpdatedAt());
-                Rental_books resultRb = repository.save(rentalBooks);
+                rentalBooks.setCreatedAt(new Date());
+                rentalBooks.setUpdatedAt(new Date());
+                RentalBooks resultRb = repository.save(rentalBooks);
                 response = ResponseEntity.ok().body(resultRb);
             }
 
@@ -86,7 +84,7 @@ public class Rental_books_ctrl {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity <?> findAll(){
-        List<Rental_books> rentalBooks = repository.findAll();
+        List<RentalBooks> rentalBooks = repository.findAll();
         return ResponseEntity.ok().body(rentalBooks);
     }
 
@@ -107,7 +105,7 @@ public class Rental_books_ctrl {
     // UPDATE
     @CrossOrigin
     @PutMapping(value="/{id}")
-    public Object update(@PathVariable("id") long id, @RequestBody Rental_books rentalBooks) {
+    public Object update(@PathVariable("id") long id, @RequestBody RentalBooks rentalBooks) {
         if(id == 0){
             response = ResponseEntity.badRequest().build();
         }else{
@@ -120,9 +118,9 @@ public class Rental_books_ctrl {
 
                 record.setCreatedBy(record.getCreatedBy()); //mantendo os valores de criação
                 record.setCreatedAt(record.getCreatedAt()); //mantendo os valores de criação
-                record.setUpdatedAt(rentalBooks.getUpdatedAt() == null ? new Date() : rentalBooks.getUpdatedAt()); //verifica se foi passado uma nova data de update
+                record.setUpdatedAt(new Date()); //nova data de update
                 //save client
-                Rental_books updated = repository.save(record);
+                RentalBooks updated = repository.save(record);
                 return ResponseEntity.ok().body(updated);
             }).orElse(ResponseEntity.notFound().build());
         }
@@ -136,7 +134,7 @@ public class Rental_books_ctrl {
         if(id == 0){
             response = ResponseEntity.badRequest().build();
         }else{
-            Rental_books item = repository.findById(id).map(record -> record) //pegar o rental_book
+            RentalBooks item = repository.findById(id).map(record -> record) //pegar o rental_book
                     .orElse(null);
             if(item == null){
                 response =  ResponseEntity.notFound().build();
@@ -149,12 +147,15 @@ public class Rental_books_ctrl {
                     response = ResponseEntity.badRequest().build(); //não aceita cancelar livro com status em "alugado"
                 }else if(status_rental == 2){ //status reservado
                     book.setStatus_book(1); //disponível
+                    book.setUpdatedAt(new Date());
                     repositoryBook.save(book);
 
                     item.setId_status_rental(3); //status cancelado
-                    item.setUpdatedAt(item.getUpdatedAt() == null ? new Date() : item.getUpdatedAt());
-                    Rental_books updated = repository.save(item);
+                    item.setUpdatedAt(new Date());
+                    RentalBooks updated = repository.save(item);
                     response = ResponseEntity.ok().body(updated);
+                }else if(status_rental == 3){
+                    response = ResponseEntity.ok("Reserved already canceled");
                 }
             }
         }
@@ -168,7 +169,7 @@ public class Rental_books_ctrl {
         if(id == 0){
             response = ResponseEntity.badRequest().build();
         }else{
-            Rental_books item = repository.findById(id).map(record -> record) //pegar o rental_book
+            RentalBooks item = repository.findById(id).map(record -> record) //pegar o rental_book
                     .orElse(null);
             if(item == null){
                 response =  ResponseEntity.notFound().build();
@@ -178,14 +179,15 @@ public class Rental_books_ctrl {
                 Book book = repositoryBook.findById(id_book).map(record -> record) //pegar o book
                         .orElse(null);
                 if(status_rental == 2){ //status reservado
-                    response = ResponseEntity.badRequest().build(); //não aceita cancelar livro com status em "Reservado"
+                    response = ResponseEntity.ok("Try cancel reserved"); //não aceita devolver livro com status em "Reservado"
                 }else if(status_rental == 1){ //status alugado
                     book.setStatus_book(1); //disponível
+                    book.setUpdatedAt(new Date());
                     repositoryBook.save(book);
 
                     item.setId_status_rental(4); //status devolvido
-                    item.setUpdatedAt(item.getUpdatedAt() == null ? new Date() : item.getUpdatedAt());
-                    Rental_books updated = repository.save(item);
+                    item.setUpdatedAt(new Date());
+                    RentalBooks updated = repository.save(item);
                     response = ResponseEntity.ok().body(updated);
                 }
             }

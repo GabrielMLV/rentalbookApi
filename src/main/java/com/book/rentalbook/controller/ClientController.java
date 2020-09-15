@@ -11,11 +11,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping({"/client"})
-public class Client_ctrl {
+public class ClientController {
 
     private ResponseEntity <?> response ;
     //CONSTRUCTOR
-    public Client_ctrl(ClientRepository repository){
+    public ClientController(ClientRepository repository){
         response = null;
         this.repository = repository;
     }
@@ -25,8 +25,8 @@ public class Client_ctrl {
     @CrossOrigin
     @PostMapping()
     public ResponseEntity <?> create(@RequestBody Client client){
-        client.setCreatedAt(client.getCreatedAt() == null ? new Date() : client.getCreatedAt());
-        client.setUpdatedAt(client.getUpdatedAt() == null ? new Date() : client.getUpdatedAt());
+        client.setCreatedAt(new Date());
+        client.setUpdatedAt(new Date());
         Client clientResult = repository.save(client);
         return ResponseEntity.ok().body(clientResult);
     }
@@ -66,7 +66,7 @@ public class Client_ctrl {
                 record.setPhone(client.getPhone());
                 record.setCreatedBy(record.getCreatedBy()); //mantendo os valores de criação
                 record.setCreatedAt(record.getCreatedAt()); //mantendo os valores de criação
-                record.setUpdatedAt(client.getUpdatedAt() == null ? new Date() : client.getUpdatedAt()); //verifica se foi passado uma nova data de update
+                record.setUpdatedAt(new Date()); //verifica se foi passado uma nova data de update
                 //save client
                 Client updated = repository.save(record);
                 return ResponseEntity.ok().body(updated);

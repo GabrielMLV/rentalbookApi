@@ -13,8 +13,8 @@ import java.util.TimeZone;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data // toString, equals, hashCode, getters e setters.
-@Entity(name = "rental_books")
-public class Rental_books {
+@Entity(name = "rentalbooks")
+public class RentalBooks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
