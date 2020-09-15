@@ -20,6 +20,7 @@ git clone https://github.com/GabrielMLV/rentalbookApi.git
 ```bash
 create database rentalbook
 ```
+> Tabelas são geradas automaticamente e alguns dados de testes são inseridos (verificar data.sql e schema.sql na pasta resources)
 
 **3. Modifique o usuário e senha de acordo com a sua instalação**
 
