@@ -1,16 +1,16 @@
 INSERT INTO book(
 	created_at, created_by, description, price, status_book, title, updated_at)
-	SELECT now(), 'system', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 29.99, 1, 'O encontro', now() WHERE NOT EXISTS (
+	SELECT now(), 'system', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 29.99, 2, 'O encontro', now() WHERE NOT EXISTS (
     SELECT 1 FROM book WHERE title='O encontro');
 
 INSERT INTO book(
 	created_at, created_by, description, price, status_book, title, updated_at)
-	SELECT now(), 'system', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 39.99, 1, 'O carro', now() WHERE NOT EXISTS (
+	SELECT now(), 'system', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 39.99, 2, 'O carro', now() WHERE NOT EXISTS (
     SELECT 1 FROM book WHERE title='O carro');
 
 INSERT INTO book(
 	created_at, created_by, description, price, status_book, title, updated_at)
-	SELECT now(), 'system', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 15.99, 1, 'Eu sou a lenda', now() WHERE NOT EXISTS (
+	SELECT now(), 'system', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 15.99, 3, 'Eu sou a lenda', now() WHERE NOT EXISTS (
     SELECT 1 FROM book WHERE title='Eu sou a lenda');
 
 INSERT INTO book(
@@ -30,7 +30,7 @@ INSERT INTO book(
 
 INSERT INTO book(
 	created_at, created_by, description, price, status_book, title, updated_at)
-	SELECT now(), 'system', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 21.59, 3, 'Caminhos', now() WHERE NOT EXISTS (
+	SELECT now(), 'system', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 21.59, 4, 'Caminhos', now() WHERE NOT EXISTS (
     SELECT 1 FROM book WHERE title='Caminhos');
 
 
@@ -93,3 +93,23 @@ INSERT INTO status_rental(
 	id, status_name)
 	SELECT 4, 'Devolvido' WHERE NOT EXISTS (
     SELECT 1 FROM status_rental WHERE status_name='Devolvido');
+
+INSERT INTO rentalbooks(
+	created_at, created_by, date_end_rental, date_start_rental, id_book, id_client, id_status_rental, updated_at)
+	SELECT now(), 'system', '2020-09-24 23:48:07', '2020-09-16 23:48:07', 1, 1, 1, now() WHERE NOT EXISTS (
+    SELECT 1 FROM rentalbooks WHERE id=1);
+
+INSERT INTO rentalbooks(
+	created_at, created_by, date_end_rental, date_start_rental, id_book, id_client, id_status_rental, updated_at)
+	SELECT now(), 'system', '2020-09-20 23:48:07', '2020-09-14 23:48:07', 2, 3, 1, now() WHERE NOT EXISTS (
+    SELECT 1 FROM rentalbooks WHERE id=2);
+
+INSERT INTO rentalbooks(
+	created_at, created_by, date_end_rental, date_start_rental, id_book, id_client, id_status_rental, updated_at)
+	SELECT now(), 'system', '2020-09-19 23:48:07', '2020-09-12 23:48:07', 3, 2, 1, now() WHERE NOT EXISTS (
+    SELECT 1 FROM rentalbooks WHERE id=3);
+
+INSERT INTO rentalbooks(
+	created_at, created_by, date_end_rental, date_start_rental, id_book, id_client, id_status_rental, updated_at)
+	SELECT now(), 'system', '2020-09-29 23:48:07', '2020-09-22 23:48:07', 2, 4, 2, now() WHERE NOT EXISTS (
+    SELECT 1 FROM rentalbooks WHERE id=4);

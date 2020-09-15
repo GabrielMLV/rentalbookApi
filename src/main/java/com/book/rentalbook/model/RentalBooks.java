@@ -22,9 +22,7 @@ public class RentalBooks {
     private int id_client;
     private int id_book;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date_start_rental; //data do início do aluguel
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date_end_rental; //data do fim do aluguel
 
     private int id_status_rental; //status do alguel ex: 1 para alugado, 2 para reservado...

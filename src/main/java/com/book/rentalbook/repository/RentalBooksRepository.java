@@ -13,7 +13,6 @@ import java.util.List;
 @Repository
 @EnableJpaRepositories
 public interface RentalBooksRepository extends JpaRepository<RentalBooks, Long> {
-
 /*    @Query(value = "SELECT rb.*, bk.title as bookTitle, cl.name as clientName FROM rental_books rb" +
                     " RIGHT JOIN book bk ON bk.id = rb.id_book" +
                     " RIGHT JOIN client cl ON cl.id = rb.id_client"+
@@ -22,15 +21,15 @@ public interface RentalBooksRepository extends JpaRepository<RentalBooks, Long> 
                     " rb.id_status_rental = ?1", nativeQuery = true)
     List<RentalWeekly> searchByDateAndStatus(int id_status_rental);*/
 
-    @Query(nativeQuery = true, value = "SELECT rb.date_start_rental, rb.date_end_rental, rb.id_status_rental, bk.price, bk.title, st.status_name, cl.name FROM rental_books rb" +
+    @Query(nativeQuery = true, value = "SELECT rb.date_start_rental, rb.date_end_rental, rb.id_status_rental, bk.price, bk.title, st.status_name, cl.name FROM rentalbooks rb" +
             " INNER JOIN book bk ON bk.id = rb.id_book" +
             " INNER JOIN client cl ON cl.id = rb.id_client"+
             " INNER JOIN status_rental st ON st.id = rb.id_status_rental"+
-            " WHERE NOW() <= rb.date_end_rental AND" +
+            " WHERE NOW() - INTERVAL '1' HOUR <= rb.date_end_rental AND" +
             " (NOW() + INTERVAL '7' DAY) >= rb.date_end_rental AND" +
             " rb.id_status_rental = ?1" )
     List<RentalBooksWeekly> searchByDateAndStatus(int id_status_rental);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM rentabooks WHERE id_book = ?1" )
+    @Query(nativeQuery = true, value = "SELECT * FROM rentalbooks WHERE id_book = ?1" )
     List<RentalBooks> getRentalByIdBook(Long id);
 }

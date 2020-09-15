@@ -2,6 +2,7 @@ package com.book.rentalbook.controller;
 
 import com.book.rentalbook.model.Book;
 import com.book.rentalbook.model.RentalBooks;
+import com.book.rentalbook.projection.BookWithStatus;
 import com.book.rentalbook.repository.BookRepository;
 import com.book.rentalbook.repository.RentalBooksRepository;
 import org.springframework.http.ResponseEntity;
@@ -36,11 +37,11 @@ public class BookController {
         return response;
     }
 
-    // GET ALL CLIENTS
+    // GET ALL BOOKS
     @CrossOrigin
-    @GetMapping(produces="application/json")
+    @GetMapping()
     public ResponseEntity <?> findAll(){
-        List<Book> books = repository.findAll();
+        List<BookWithStatus> books = repository.getAllBooks();
         return ResponseEntity.ok().body(books);
     }
 
