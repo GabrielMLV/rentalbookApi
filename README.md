@@ -41,7 +41,7 @@ Alternativamente, você pode rodar dessa forma -
 mvn spring-boot:run
 ```
 
-O app vai rodar nesse endereço <http://localhost:8080>.
+O app vai rodar nesse endereço <http://localhost:8080/v1/api>.
 
 ## Explore as APIs
 
