@@ -31,13 +31,6 @@ create database rentalbook
 **4. Build e rode a aplicação usando MAVEN**
 
 ```bash
-mvn package
-java -jar target/crud-1.0.0.jar
-```
-
-Alternativamente, você pode rodar dessa forma -
-
-```bash
 mvn spring-boot:run
 ```
 
